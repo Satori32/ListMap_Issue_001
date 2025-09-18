@@ -2,6 +2,9 @@
 #include <list>
 #include <string>
 #include <utility>
+#include <initializer_list>
+
+//#define UseIL
 
 template<class key_type, class value_type, class Al> class ListMap;
 
@@ -75,6 +78,10 @@ public:
 	ListMap(const allocator_type& al = allocator_type()) : lst(al) {}
 	ListMap(const ListMap& other) : lst(other.lst) {}
 	ListMap(ListMap&& other) noexcept : lst(std::move(other.lst)) {}
+#ifdef UseIL
+	ListMap(const std::initializer_list<pair_type>& init) : lst(init) {}
+#endif
+
 	ListMap& operator=(const ListMap& other) {
 		if (this != &other) {
 			lst = other.lst;
@@ -91,7 +98,11 @@ public:
 };
 int main() {
 	//ListMap<std::string, int, std::allocator<std::pair<const std::string, int>>> lm;
+#ifdef UseIL
+	ListMap<std::string, int> lm = { {"a",1},{"b",2},{"c",3} };
+#else
 	ListMap<std::string, int> lm;
+#endif // UseIL
 	lm["apple"] = 1;
 	lm["banana"] = 2;
 	lm["orange"] = 3;
