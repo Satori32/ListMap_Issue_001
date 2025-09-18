@@ -33,6 +33,10 @@ public:
 			}
 		}
 	}
+	void unique() {
+		lst.sort([](const pair_type& a, const pair_type& b) { return a.first < b.first; });
+		lst.unique([](const pair_type& a, const pair_type& b) { return a.first == b.first; });
+	}
 	void print() const {
 		for (const auto& p : lst) {
 			std::cout << p.first << ": " << p.second << std::endl;
